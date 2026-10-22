@@ -2,7 +2,9 @@ test("GET to /api/v1/status should return 200", async () => {
   const response = await fetch("http://localhost:3000/api/v1/status");
   expect(response.status).toBe(200);
 
-  // console.log(response);
+  const responseBody = await response.json();
+  console.log(responseBody);
+
 });
 
 test("GET to /api/v1/status should have updated_at convertable to ISO 8601 format", async () => {
@@ -36,6 +38,7 @@ test("GET to /api/v1/status should have database version", async () => {
 
   const versionRegex = /^(\d+\.\d+)/;
   expect(versionRegex.test(version)).toBe(true);
+  expect(version).toEqual("16.0");
 
 });
 
@@ -47,6 +50,7 @@ test("GET to /api/v1/status should have max_connections", async () => {
   
   const maxConnections = responseBody.dependencies.database.max_connections;
   expect(typeof maxConnections).toBe("number");
+
 });
 
 test("GET to /api/v1/status should have opened_connections", async () => {
@@ -56,4 +60,6 @@ test("GET to /api/v1/status should have opened_connections", async () => {
   expect(responseBody.dependencies.database.opened_connections).toBeDefined();
   const openedConnections = responseBody.dependencies.database.opened_connections;
   expect(typeof openedConnections).toBe("number");
+  expect(openedConnections).toEqual(1);
+
 });
